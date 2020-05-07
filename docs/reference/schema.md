@@ -178,6 +178,10 @@ A list of bindings *exposed* by the service. Bindings represent protocols *provi
 
 A path to another tye.yaml to be used by the application.
 
+#### `repository` (string)
+
+A reference to a repository that will be cloned and used by the application. By default, it is a string that would be passed after `git clone`.
+
 ## Environment Variables
 
 `EnvironmentVariable` elements appear in a list inside the `env` property of a `Service`.

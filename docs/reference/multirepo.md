@@ -67,6 +67,8 @@ services:
    repository: https://github.com/MyOrg/InventoryRepo
 ```
 
+The repository cloned will follow the same conventions for figuring out how to run/deploy; either using a tye.yaml, sln, then csproj/fsproj if present. These are all based on the root of the clone repository.
+
 The string for `repository` is what should be passed to the call to `git clone`. So form example, if you'd like to specify a branch to clone, you can specify `--branch`.
 
 ```yaml
