@@ -131,6 +131,9 @@ namespace Tye.Serialization
                         service.Readiness = new ConfigProbe();
                         HandleServiceProbe((YamlMappingNode)child.Value, service.Readiness!);
                         break;
+                    case "function":
+                        service.Function = YamlParser.GetScalarValue(key, child.Value);
+                        break;
                     default:
                         throw new TyeYamlException(child.Key.Start, CoreStrings.FormatUnrecognizedKey(key));
                 }

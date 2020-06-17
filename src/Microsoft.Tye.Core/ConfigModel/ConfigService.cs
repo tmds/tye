@@ -39,5 +39,6 @@ namespace Microsoft.Tye.ConfigModel
         public List<BuildProperty> BuildProperties { get; set; } = new List<BuildProperty>();
         public ConfigProbe? Liveness { get; set; }
         public ConfigProbe? Readiness { get; set; }
+        public string? Function { get; set; }
     }
 }
