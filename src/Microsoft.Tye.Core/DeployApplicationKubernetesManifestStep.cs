@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.CommandLine.Invocation;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -45,7 +44,7 @@ namespace Microsoft.Tye
             output.WriteDebugLine($"Running 'kubectl apply' in ${ns}");
             output.WriteCommandLine("kubectl", $"apply -f \"{tempFile.FilePath}\"");
             var capture = output.Capture();
-            var exitCode = await Process.ExecuteAsync(
+            var exitCode = await ProcessUtil.ExecuteAsync(
                 $"kubectl",
                 $"apply -f \"{tempFile.FilePath}\"",
                 System.Environment.CurrentDirectory,

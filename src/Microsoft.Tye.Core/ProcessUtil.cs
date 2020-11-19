@@ -17,6 +17,36 @@ namespace Microsoft.Tye
         [DllImport("libc", SetLastError = true, EntryPoint = "kill")]
         private static extern int sys_kill(int pid, int sig);
 
+        public static Task<int> ExecuteDockerAsync(
+            string args,
+            string? workingDir = null,
+            Action<string>? stdOut = null,
+            Action<string>? stdErr = null,
+            params (string key, string value)[] environmentVariables)
+        => ExecuteAsync(DockerDetector.Instance.Engine, args, workingDir, stdOut, stdErr, environmentVariables);
+
+        public static Task<int> ExecuteAsync(
+            string command,
+            string args,
+            string? workingDir = null,
+            Action<string>? stdOut = null,
+            Action<string>? stdErr = null,
+            params (string key, string value)[] environmentVariables)
+        => System.CommandLine.Invocation.Process.ExecuteAsync(command, args, workingDir, stdOut, stdErr, environmentVariables);
+
+        public static Task<ProcessResult> RunDockerAsync(
+            string arguments,
+            string? workingDirectory = null,
+            bool throwOnError = true,
+            IDictionary<string, string>? environmentVariables = null,
+            Action<string>? outputDataReceived = null,
+            Action<string>? errorDataReceived = null,
+            Action<int>? onStart = null,
+            Action<int>? onStop = null,
+            CancellationToken cancellationToken = default)
+        => RunAsync(DockerDetector.Instance.Engine, arguments, workingDirectory, throwOnError, environmentVariables,
+            outputDataReceived, errorDataReceived, onStart, onStop, cancellationToken);
+
         public static async Task<ProcessResult> RunAsync(
             string filename,
             string arguments,

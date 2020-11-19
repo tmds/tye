@@ -36,14 +36,14 @@ namespace Microsoft.Tye.Hosting
                 return;
             }
 
-            if (!await DockerDetector.Instance.IsDockerInstalled.Value)
+            if (!DockerDetector.Instance.IsInstalled)
             {
                 _logger.LogError("Unable to detect docker installation. Docker is not installed.");
 
                 throw new CommandException("Docker is not installed.");
             }
 
-            if (!await DockerDetector.Instance.IsDockerConnectedToDaemon.Value)
+            if (!DockerDetector.Instance.IsConnected)
             {
                 _logger.LogError("Unable to connect to docker daemon. Docker is not running.");
 
@@ -64,8 +64,7 @@ namespace Microsoft.Tye.Hosting
         {
             await Task.Yield();
 
-            var result = await ProcessUtil.RunAsync(
-                                    "docker",
+            var result = await ProcessUtil.RunDockerAsync(
                                     $"images --filter \"reference={image}\" --format \"{{{{.ID}}}}\"",
                                     throwOnError: false);
 
@@ -85,8 +84,7 @@ namespace Microsoft.Tye.Hosting
 
             _logger.LogInformation("Running docker command {command}", command);
 
-            result = await ProcessUtil.RunAsync(
-                             "docker",
+            result = await ProcessUtil.RunDockerAsync(
                              command,
                              outputDataReceived: data => _logger.LogInformation("{Image}: " + data, image),
                              errorDataReceived: data => _logger.LogInformation("{Image}: " + data, image),

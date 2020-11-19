@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using System.CommandLine.Invocation;
 using System.Threading.Tasks;
 
 namespace Microsoft.Tye
@@ -30,8 +29,7 @@ namespace Microsoft.Tye
             output.WriteDebugLine("Running 'docker push'.");
             output.WriteCommandLine("docker", $"push {imageName}:{imageTag}");
             var capture = output.Capture();
-            var exitCode = await Process.ExecuteAsync(
-                $"docker",
+            var exitCode = await ProcessUtil.ExecuteDockerAsync(
                 $"push {imageName}:{imageTag}",
                 stdOut: capture.StdOut,
                 stdErr: capture.StdErr);

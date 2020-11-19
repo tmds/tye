@@ -21,7 +21,15 @@ namespace Microsoft.Extensions.Configuration
                 return null;
             }
 
-            return new Uri(protocol + "://" + host + ":" + port + "/");
+            bool hostIsIPv6Address = host.Contains(":");
+            if (hostIsIPv6Address)
+            {
+                return new Uri(protocol + "://[" + host + "]:" + port + "/");
+            }
+            else
+            {
+                return new Uri(protocol + "://" + host + ":" + port + "/");
+            }
         }
 
         public static string? GetConnectionString(this IConfiguration configuration, string name, string? binding)

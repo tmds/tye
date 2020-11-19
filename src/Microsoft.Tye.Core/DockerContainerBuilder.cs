@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using System.CommandLine.Invocation;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -43,8 +42,7 @@ namespace Microsoft.Tye
             output.WriteDebugLine("Running 'docker build'.");
             output.WriteCommandLine("docker", $"build \"{contextDirectory}\" -t {container.ImageName}:{container.ImageTag} -f \"{dockerFilePath}\"");
             var capture = output.Capture();
-            var exitCode = await Process.ExecuteAsync(
-                $"docker",
+            var exitCode = await ProcessUtil.ExecuteDockerAsync(
                 $"build \"{contextDirectory}\" -t {container.ImageName}:{container.ImageTag} -f \"{dockerFilePath}\"",
                 new FileInfo(containerService.DockerFile).DirectoryName,
                 stdOut: capture.StdOut,
@@ -148,8 +146,7 @@ namespace Microsoft.Tye
                 output.WriteDebugLine("Running 'docker build'.");
                 output.WriteCommandLine("docker", $"build \"{contextDirectory}\" -t {container.ImageName}:{container.ImageTag} -f \"{dockerFilePath}\"");
                 var capture = output.Capture();
-                var exitCode = await Process.ExecuteAsync(
-                    $"docker",
+                var exitCode = await ProcessUtil.ExecuteDockerAsync(
                     $"build \"{contextDirectory}\" -t {container.ImageName}:{container.ImageTag} -f \"{dockerFilePath}\"",
                     project.ProjectFile.DirectoryName,
                     stdOut: capture.StdOut,

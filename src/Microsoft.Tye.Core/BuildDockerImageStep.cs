@@ -25,12 +25,12 @@ namespace Microsoft.Tye
                 return;
             }
 
-            if (!await DockerDetector.Instance.IsDockerInstalled.Value)
+            if (!DockerDetector.Instance.IsInstalled)
             {
                 throw new CommandException($"Cannot generate a docker image for '{service.Name}' because docker is not installed.");
             }
 
-            if (!await DockerDetector.Instance.IsDockerConnectedToDaemon.Value)
+            if (!DockerDetector.Instance.IsConnected)
             {
                 throw new CommandException($"Cannot generate a docker image for '{service.Name}' because docker is not running.");
             }

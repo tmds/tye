@@ -148,8 +148,27 @@ namespace Microsoft.Tye.Hosting.Model
             foreach (var b in service.Description.Bindings)
             {
                 var protocol = b.Protocol;
-                var host = b.Host ?? defaultHost ?? (isDockerRunInfo ? service.Description.Name : "");
-                var port = b.Port;
+                string host;
+                int? port;
+                if (b.Host != null) // Binding specifies host explicitly.
+                {
+                    host = b.Host;
+                    port = b.Port;
+                }
+                else
+                {
+                    bool serviceIsDockerRunInfo = service.Description.RunInfo is DockerRunInfo;
+                    if (isDockerRunInfo && serviceIsDockerRunInfo) // Both services run on the docker network.
+                    {
+                        host = service.Description.Name;
+                        port = b.ContainerPort;
+                    }
+                    else // Use the host network.
+                    {
+                        host = defaultHost;
+                        port = b.Port;
+                    }
+                }
 
                 bindings.Add(new EffectiveBinding(
                     service.Description.Name,

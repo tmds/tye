@@ -373,7 +373,7 @@ namespace E2ETest
             });
 
             // Delete the volume
-            await ProcessUtil.RunAsync("docker", $"volume rm {volumeName}");
+            await ProcessUtil.RunDockerAsync($"volume rm {volumeName}");
         }
 
         [ConditionalFact]
@@ -390,7 +390,7 @@ namespace E2ETest
             application.Network = dockerNetwork;
 
             // Create the existing network
-            await ProcessUtil.RunAsync("docker", $"network create {dockerNetwork}");
+            await ProcessUtil.RunDockerAsync($"network create {dockerNetwork}");
 
             var handler = new HttpClientHandler
             {
@@ -429,7 +429,7 @@ namespace E2ETest
             finally
             {
                 // Delete the network
-                await ProcessUtil.RunAsync("docker", $"network rm {dockerNetwork}");
+                await ProcessUtil.RunDockerAsync($"network rm {dockerNetwork}");
             }
         }
 
