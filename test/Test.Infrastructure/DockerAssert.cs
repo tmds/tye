@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit.Abstractions;
 using Xunit.Sdk;
+using Microsoft.Tye;
 
 namespace Test.Infrastructure
 {
@@ -22,7 +23,7 @@ namespace Test.Infrastructure
             var builder = new StringBuilder();
 
             output.WriteLine($"> docker images \"{repository}\" --format \"{{{{.Repository}}}}\"");
-            var exitCode = await Process.ExecuteAsync(
+            var exitCode = await ProcessUtil.ExecuteAsync(
                 "docker",
                 $"images \"{repository}\" --format \"{{{{.Repository}}}}\"",
                 stdOut: OnOutput,
@@ -57,7 +58,7 @@ namespace Test.Infrastructure
             {
 
                 output.WriteLine($"> docker rmi \"{id}\" --force");
-                var exitCode = await Process.ExecuteAsync(
+                var exitCode = await ProcessUtil.ExecuteAsync(
                     "docker",
                     $"rmi \"{id}\" --force",
                     stdOut: OnOutput,
@@ -82,7 +83,7 @@ namespace Test.Infrastructure
             var builder = new StringBuilder();
 
             output.WriteLine($"> docker ps --format \"{{{{.ID}}}}\"");
-            var exitCode = await Process.ExecuteAsync(
+            var exitCode = await ProcessUtil.ExecuteAsync(
                 "docker",
                 $"ps --format \"{{{{.ID}}}}\"",
                 stdOut: OnOutput,
@@ -110,7 +111,7 @@ namespace Test.Infrastructure
             var builder = new StringBuilder();
 
             output.WriteLine($"> docker images -q \"{repository}\"");
-            var exitCode = await Process.ExecuteAsync(
+            var exitCode = await ProcessUtil.ExecuteAsync(
                 "docker",
                 $"images -q \"{repository}\"",
                 stdOut: OnOutput,
